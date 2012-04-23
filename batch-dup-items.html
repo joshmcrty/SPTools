@@ -1,0 +1,164 @@
+﻿<!DOCTYPE html>
+<html>
+<meta charset="UTF-8" />
+
+<title>Batch Duplicate List Items</title>
+
+<link rel="stylesheet" href="css/bootstrap.min.css" />
+<link rel="stylesheet" href="css/bootstrap-responsive.min.css" />
+<link rel="stylesheet" href="css/sptools.css" />
+<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery.SPServices/0.7.1a/jquery.SPServices-0.7.1a.min.js"></script>
+<script type="text/javascript" src="js/bootstrap.min.js"></script>
+
+</head>
+<body data-spy="scroll">
+<div class="navbar navbar-fixed-top">
+	<div class="navbar-inner">
+		<div class="container">
+			<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</a>
+			<a class="brand" href="index.html">SPTools</a>
+			<div class="nav-collapse">
+				<ul class="nav">
+					<li><a href="batch-update-items.html">Update Items</a></li>
+					<li><a href="batch-approve-items.html">Approve List Items</a></li>
+					<li class="active"><a href="batch-dup-items.html">Dup List Items</a></li>
+					<li><a href="batch-check-in-documents.html">Check-in Documents</a></li>
+					<li><a href="batch-start-workflow.html">Start Workflow</a></li>
+					<li><a href="check-permissions.html">Check Permissions</a></li>
+					<li><a href="script-audit.html">Script Audit</a></li>
+				</ul>
+			</div>
+		</div><!-- .container -->
+	</div><!-- .navbar-inner -->
+</div><!-- .navbar .navbar-fixed-top -->
+<div class="container">
+	<header class="page-header">
+		<h1>Batch Duplicate List Items</h1>
+		<p>Sometimes you need to copy a lot of list data.</p>
+		<p>* indicates a required field.</p>
+	</header>
+
+	<form id="batch-form" class="form-horizontal" action="#">
+		
+		<fieldset>
+			<legend>1. Select Source List and Items</legend>
+			
+			<div class="control-group">
+				<label class="control-label" for="source-list-name">Source List Name*</label>
+				<div class="controls">
+					<input type="text" id="source-list-name" placeholder="List Name" required="required" />
+					<p class="help-block">Enter the display name or the GUID of the source list (e.g. &ldquo;Announcements&rdquo; or &ldquo;{A123AB12-AB1A-12A1-1234-ABC1A1234A12}&rdquo;).</p>
+				</div>
+			</div>
+			
+			<div class="control-group">
+				<label class="control-label" for="source-web-url">Source Web URL*</label>
+				<div class="controls">
+					<input type="text" id="source-web-url" placeholder="http://Server/Site" required="required" />
+					<p class="help-block">Enter the path to the site or sub-site where the source list is located (e.g. &ldquo;http://Server/Site&rdquo;).</p>
+				</div>
+			</div>
+			
+			<div class="control-group">
+				<label class="control-label" for="caml-query">CAML Query*</label>
+				<div class="controls">
+					<textarea id="caml-query" class="input-xlarge" rows="6" required="required">&lt;Query&gt;&lt;Where&gt;&lt;Neq&gt;&lt;FieldRef Name=&quot;ID&quot; /&gt;&lt;Value Type=&quot;Integer&quot;&gt;0&lt;/Value&gt;&lt;/Neq&gt;&lt;/Where&gt;&lt;/Query&gt;</textarea>
+					<p class="help-block">Enter the CAML Query to select the items you want to duplicate. By default this selects all items.</p>
+				</div>
+			</div>
+			
+			<!--
+			<div class="control-group">
+				<label class="control-label" for="source-list-content-type">Source List Content Type</label>
+				<div class="controls">
+					<input type="text" id="source-list-content-type" value="" />
+					<p class="help-block">Enter the display name of the content type source list (e.g. &ldquo;Announcements&rdquo;).</p>
+				</div>
+			</div>
+			-->
+			
+		</fieldset>
+		
+		<fieldset>
+			<legend>2. Select Destination List</legend>
+			
+			<div class="control-group">
+				<label class="control-label" for="destination-list-name">Destination List Name*</label>
+				<div class="controls">
+					<input type="text" id="destination-list-name" placeholder="List Name" />
+					<p class="help-block">Enter the display name or the GUID of the destination list (e.g. &ldquo;Announcements&rdquo; or &ldquo;{A123AB12-AB1A-12A1-1234-ABC1A1234A12}&rdquo;).</p>
+				</div>
+			</div>
+			
+			<div class="control-group">
+				<label class="control-label" for="destination-web-url">Destination Web URL*</label>
+				<div class="controls">
+					<input type="text" id="destination-web-url" placeholder="http://Server/Site" />
+					<p class="help-block">Enter the path to the site or sub-site where the destination list is located (e.g. &ldquo;http://Server/Site&rdquo;).</p>
+				</div>
+			</div>
+			
+			<div class="control-group">
+				<label class="control-label" for="preview-button">Preview Your Query</label>
+				<div class="controls">
+					<input type="button" id="preview-button" class="btn btn-info" value="Preview" />
+					<p class="help-block">Click the Preview button to view all of the items that will be duplicated. This will <strong>not</strong> perform the actual duplication.</p>
+				</div>
+			</div>
+			
+		</fieldset>
+
+		<fieldset>
+			<legend>3. Map Fields</legend>
+			
+			<div class="control-group">
+				<label class="control-label" for="add-field-button">Add Fields to Map</label>
+				<div class="controls">
+					<table border="0" cellpadding="0" cellspacing="0" id="field-list-table" class="table">
+						<thead>
+							<tr>
+								<th>Source Field</th>
+								<th>Destination Field</th>
+							</tr>
+						</thead>
+						<tbody>
+						</tbody>
+					</table>
+					<input type="button" id="add-field-button" class="btn" value="Add a Field" /> <input type="button" id="reset-button" class="btn btn-warning" value="Reset Fields" />
+					<p class="help-block">Add any fields that you want to include in the destination list by matching the source list fields with the destination list fields. Field types should match to avoid errors i.e. a multiple lines of text field should only be mapped to another multiple lines of text field. Lookup fields should only be copied if the destination list has a lookup field that points to the same list of items.</p>
+				</div>
+			</div>
+			
+		</fieldset>		
+
+		<fieldset>
+			<legend>4. Duplicate Items</legend>
+			<div class="alert">
+				<p><strong>Warning</strong>: Make sure your source and destination lists are set properly and you've run a preview to ensure that the correct list items will be duplicated. Once this process begins it can only be stopped by closing your browser tab/window.</p>
+			</div>
+			<p><input type="submit" id="update-button" class="btn btn-primary" value="Duplicate Items" /></p>
+		</fieldset>
+	</form>
+
+	<h2>Results</h2>
+
+	<table border="0" cellpadding="0" cellspacing="0" id="results-table" width="100%" class="table table-bordered table-striped">
+		<thead>
+			<tr>
+				<th>Item URL</th><th>Result</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td colspan="2">Waiting for your input to complete the batch duplication process.</td>
+			</tr>
+		</tbody>
+	</table>
+</div><!-- .container -->
+</body>
+</html>	

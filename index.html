@@ -1,0 +1,71 @@
+﻿<!DOCTYPE html>
+<html>
+<meta charset="UTF-8" />
+
+<title>SPTools Home</title>
+
+<link rel="stylesheet" href="css/bootstrap.min.css" />
+<link rel="stylesheet" href="css/bootstrap-responsive.min.css" />
+<link rel="stylesheet" href="css/sptools.css" />
+<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery.SPServices/0.7.1a/jquery.SPServices-0.7.1a.min.js"></script>
+<script type="text/javascript" src="js/bootstrap.min.js"></script>
+
+</head>
+<body data-spy="scroll">
+<div class="navbar navbar-fixed-top">
+	<div class="navbar-inner">
+		<div class="container">
+			<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</a>
+			<a class="brand" href="index.html">SPTools</a>
+			<div class="nav-collapse">
+				<ul class="nav">
+					<li><a href="batch-update-items.html">Update Items</a></li>
+					<li><a href="batch-approve-items.html">Approve List Items</a></li>
+					<li><a href="batch-dup-items.html">Dup List Items</a></li>
+					<li><a href="batch-check-in-documents.html">Check-in Documents</a></li>
+					<li><a href="batch-start-workflow.html">Start Workflow</a></li>
+					<li><a href="check-permissions.html">Check Permissions</a></li>
+					<li><a href="script-audit.html">Script Audit</a></li>
+				</ul>
+			</div><!-- .nav-collapse -->
+		</div><!-- .container -->
+	</div><!-- .navbar-inner -->
+</div><!-- .navbar .navbar-fixed-top -->
+
+<div class="container">
+
+	<header class="page-header">
+		<div class="hero-unit">
+			<h1>SPTools</h1>
+			<p>Sometimes you need to do stuff faster.</p>
+		</div><!-- .hero-unit -->
+		
+	</header>
+	
+	<section id="installation">
+		<h2>How to Use SPTools</h2>
+		
+		<p>Download all of the files and put them somewhere in your site collection (a document library will do just fine). All links within SPTools are relative, so all you need to do is dump the entire SPTools folder structure onto your site as-is.</p>
+		
+		<p>SPTools uses JavaScript to interact with SharePoint's web services. Because of that, it can only work with stuff that you have access to (it uses your credentials when it runs) and it is subject to cross-domain security restrictions (i.e. it probably won't work across site collections).</p>
+	</section><!-- #installation -->
+	
+	<section id="about">
+		<h2>Why does this exist?</h2>
+		<p>I created SPTools because I found myself repeatedly writing custom JavaScript to interact with SharePoint's web services to perform relatively simple tasks in batches. After hard-coding several of these scripts, I decided to create something a little more flexible using a basic <abbr title="Graphical User Interface">GUI</abbr> and the most common tasks that I found myself using.</p>
+		
+		<p>As you can see this is still very rough around the edges and I've got placeholders for most of the available tools (I have working examples of each tool, but I haven't generalized all of them yet for public use). However, I appreciate any testing, feedback, ideas, and suggestions that you might have.</p>	
+	</section><!-- #about -->
+	
+	<footer class="footer">
+		<p>SPTools uses <a href="http://jquery.com">jQuery</a> along with the <a href="http://spservices.codeplex.com">jQuery Library for SharePoint Web Services</a> created by <a href="http://twitter.com/sympmarc">Marc Anderson</a> and <a href="http://twitter.github.com/bootstrap">Twitter Bootstrap</a>.</p>
+	</footer><!-- .footer -->
+	
+</div><!-- .container -->
+</body>
+</html>

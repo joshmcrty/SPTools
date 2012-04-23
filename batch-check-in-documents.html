@@ -1,0 +1,140 @@
+﻿<!DOCTYPE html>
+<html>
+<meta charset="UTF-8" />
+
+<title>Batch Check in Documents</title>
+
+<link rel="stylesheet" href="css/bootstrap.min.css" />
+<link rel="stylesheet" href="css/bootstrap-responsive.min.css" />
+<link rel="stylesheet" href="css/sptools.css" />
+<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery.SPServices/0.7.1a/jquery.SPServices-0.7.1a.min.js"></script>
+<script type="text/javascript" src="js/bootstrap.min.js"></script>
+<script type="text/javascript" src="js/sptools-batch-check-in-documents.js"></script>
+
+</head>
+<body data-spy="scroll">
+<div class="navbar navbar-fixed-top">
+	<div class="navbar-inner">
+		<div class="container">
+			<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</a>
+			<a class="brand" href="index.html">SPTools</a>
+			<div class="nav-collapse">
+				<ul class="nav">
+					<li><a href="batch-update-items.html">Update Items</a></li>
+					<li><a href="batch-approve-items.html">Approve List Items</a></li>
+					<li><a href="batch-dup-items.html">Dup List Items</a></li>
+					<li class="active"><a href="batch-check-in-documents.html">Check-in Documents</a></li>
+					<li><a href="batch-start-workflow.html">Start Workflow</a></li>
+					<li><a href="check-permissions.html">Check Permissions</a></li>
+					<li><a href="script-audit.html">Script Audit</a></li>
+				</ul>
+			</div>
+		</div><!-- .container -->
+	</div><!-- .navbar-inner -->
+</div><!-- .navbar .navbar-fixed-top -->
+<div class="container">
+	<header class="page-header">
+		<h1>Batch Check in Documents</h1>
+		<p>Sometimes you need to check in a lot of documents.</p>
+		<p>* indicates a required field.</p>
+	</header>
+
+	<form id="batch-form" class="form-horizontal" action="#">
+		
+		<fieldset>
+			<legend>1. Select Library and Documents</legend>
+			
+			<div class="control-group">
+				<label class="control-label" for="source-list-name">Library Name*</label>
+				<div class="controls">
+					<input type="text" id="source-list-name" placeholder="Library Name" required="required" />
+					<p class="help-block">Enter the display name or the GUID of the source library (e.g. &ldquo;Documents&rdquo; or &ldquo;{A123AB12-AB1A-12A1-1234-ABC1A1234A12}&rdquo;).</p>
+				</div>
+			</div>
+			
+			<div class="control-group">
+				<label class="control-label" for="server-url">Server URL*</label>
+				<div class="controls">
+					<input type="text" id="server-url" placeholder="Server URL" required="required" />
+					<p class="help-block">Enter the domain of your server/site collection (e.g. &ldquo;http://Server&rdquo; with no trailing slash).</p>
+				</div>
+			</div>
+			
+			<div class="control-group">
+				<label class="control-label" for="source-web-url">Web URL*</label>
+				<div class="controls">
+					<input type="text" id="source-web-url" placeholder="http://Server/Site" required="required" />
+					<p class="help-block">Enter the path to the site or sub-site where the source library is located (e.g. &ldquo;http://Server/Site&rdquo;).</p>
+				</div>
+			</div>
+			
+			<div class="control-group">
+				<label class="control-label" for="caml-query">CAML Query*</label>
+				<div class="controls">
+					<textarea id="caml-query" class="input-xlarge" rows="6" required="required">&lt;Query&gt;&lt;Where&gt;&lt;Eq&gt;&lt;FieldRef Name='CheckoutUser' LookupId='TRUE' /&gt;&lt;Value Type='Integer'&gt;&lt;UserID /&gt;&lt;/Value&gt;&lt;/Eq&gt;&lt;/Where&gt;&lt;/Query&gt;</textarea>
+					<p class="help-block">Enter the CAML Query to select the documents you want to check in. By default this selects all documents checked out to the current user.</p>
+				</div>
+			</div>
+			
+			<!--
+			<div class="control-group">
+				<label class="control-label" for="source-list-content-type">Source List Content Type</label>
+				<div class="controls">
+					<input type="text" id="source-list-content-type" value="" />
+					<p class="help-block">Enter the display name of the content type source list (e.g. &ldquo;Announcements&rdquo;).</p>
+				</div>
+			</div>
+			-->
+			
+			<div class="control-group">
+				<label class="control-label" for="preview-button">Preview Your Query</label>
+				<div class="controls">
+					<input type="button" id="preview-button" class="btn btn-info" value="Preview" />
+					<p class="help-block">Click the Preview button to view all of the documents that will be checked in. This will <strong>not</strong> perform the actual check in.</p>
+				</div>
+			</div>
+			
+		</fieldset>
+
+		<fieldset>
+			<legend>2. Check in Items</legend>
+			
+			<div class="control-group">
+				<label class="control-label">Check in Type</label>
+				<div class="controls">
+					<label class="radio" for="major-checkin"><input type="radio" id="major-checkin" name="check-in-type" value="1" checked="checked" />Major Check In</label>
+					<label class="radio" for="minor-checkin"><input type="radio" id="minor-checkin" name="check-in-type" value="0" />Minor Check In</label>
+					<label class="radio" for="overwrite-checkin"><input type="radio" id="overwrite-checkin" name="check-in-type" value="2" />Overwrite Check In</label>
+					<p class="help-block">Select the type of check in to perform.</p>
+				</div>
+			</div>
+			
+			<div class="alert">
+				<p><strong>Warning</strong>: Make sure your library query is set properly and you've run a preview to ensure that the correct documents will be checked in. Once this process begins it can only be stopped by closing your browser tab/window. It cannot be undone.</p>
+			</div>
+			<p><input type="submit" id="update-button" class="btn btn-primary" value="Check in Documents" /></p>
+		</fieldset>
+	</form>
+
+	<h2>Results</h2>
+
+	<table border="0" cellpadding="0" cellspacing="0" id="results-table" width="100%" class="table table-bordered table-striped">
+		<thead>
+			<tr>
+				<th>Item URL</th><th>Result</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td colspan="2">Waiting for your input to complete the batch approve process.</td>
+			</tr>
+		</tbody>
+	</table>
+</div><!-- .container -->
+</body>
+</html>	
