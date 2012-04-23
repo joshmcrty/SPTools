@@ -184,7 +184,7 @@ function updateListItems( performUpdate ) {
 	
 	// Indicate that something is happening
 	$( '#processing' ).remove();
-	$( '#update-button' ).attr( 'disabled', 'disabled' ).parent().after( '<div id="processing" class="alert">Processing&hellip;</div>' );
+	$( '#update-button' ).attr( 'disabled', 'disabled' ).parent().after( '<div id="processing" class="alert">Processing&hellip;Please be patient as this may take several minutes and your browser may become unresponsive.</div>' );
 	$( '#results-table' ).find( 'tbody' ).html( '' );
 	
 	// Cache the processing message
