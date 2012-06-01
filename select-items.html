@@ -2,7 +2,7 @@
 <html>
 <meta charset="UTF-8" />
 
-<title>Batch Update List Items</title>
+<title>Select Items</title>
 
 <link rel="stylesheet" href="css/bootstrap.min.css" />
 <link rel="stylesheet" href="css/bootstrap-responsive.min.css" />
@@ -10,7 +10,7 @@
 <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
 <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery.SPServices/0.7.1a/jquery.SPServices-0.7.1a.min.js"></script>
 <script type="text/javascript" src="js/bootstrap.min.js"></script>
-<script type="text/javascript" src="js/sptools-batch-update-items.js"></script>
+<script type="text/javascript" src="js/sptools-select-items.js"></script>
 
 </head>
 <body data-spy="scroll">
@@ -25,14 +25,14 @@
 			<a class="brand" href="index.html">SPTools</a>
 			<div class="nav-collapse">
 				<ul class="nav">
-					<li class="active"><a href="batch-update-items.html">Update Items</a></li>
+					<li><a href="batch-update-items.html">Update Items</a></li>
 					<li><a href="batch-approve-items.html">Approve List Items</a></li>
 					<li><a href="batch-dup-items.html">Dup List Items</a></li>
 					<li><a href="batch-check-in-documents.html">Check-in Documents</a></li>
 					<li><a href="batch-start-workflow.html">Start Workflow</a></li>
 					<li><a href="check-permissions.html">Check Permissions</a></li>
 					<li><a href="script-audit.html">Script Audit</a></li>
-					<li><a href="select-items.html">Select Items</a></li>
+					<li class="active"><a href="select-items.html">Select Items</a></li>
 				</ul>
 			</div>
 		</div><!-- .container -->
@@ -40,8 +40,8 @@
 </div><!-- .navbar .navbar-fixed-top -->
 <div class="container">
 	<header class="page-header">
-		<h1>Batch Update List Items</h1>
-		<p>Sometimes you need to update a lot of items. Sometimes datasheet mode doesn't cut it.</p>
+		<h1>Select Items</h1>
+		<p>Sometimes you need to view items using custom queries.</p>
 		<p>* indicates a required field.</p>
 	</header>
 
@@ -53,7 +53,7 @@
 			<div class="control-group">
 				<label class="control-label" for="source-list-name">List Name*</label>
 				<div class="controls">
-					<input type="text" id="source-list-name" placeholder="List Name" required="required" />
+					<input type="text" id="source-list-name" placeholder="List Name" required="required" value="Apollo Group Crossword" />
 					<p class="help-block">Enter the display name or the GUID of the source list (e.g. &ldquo;Announcements&rdquo; or &ldquo;{A123AB12-AB1A-12A1-1234-ABC1A1234A12}&rdquo;).</p>
 				</div>
 			</div>
@@ -61,7 +61,7 @@
 			<div class="control-group">
 				<label class="control-label" for="source-web-url">Web URL*</label>
 				<div class="controls">
-					<input type="text" id="source-web-url" placeholder="http://Server/Site" required="required" />
+					<input type="text" id="source-web-url" placeholder="http://Server/Site" required="required" value="http://NewSource/ExternalAffairs" />
 					<p class="help-block">Enter the path to the site or sub-site where the source list is located (e.g. &ldquo;http://Server/Site&rdquo;).</p>
 				</div>
 			</div>
@@ -70,7 +70,7 @@
 				<label class="control-label" for="caml-query">CAML Query*</label>
 				<div class="controls">
 					<textarea id="caml-query" class="input-xlarge" rows="6" required="required">&lt;Query&gt;&lt;Where&gt;&lt;Neq&gt;&lt;FieldRef Name=&quot;ID&quot; /&gt;&lt;Value Type=&quot;Integer&quot;&gt;0&lt;/Value&gt;&lt;/Neq&gt;&lt;/Where&gt;&lt;/Query&gt;</textarea>
-					<p class="help-block">Enter the CAML Query to select the items you want to update. By default this selects all items.</p>
+					<p class="help-block">Enter the CAML Query to select the items you want. By default this selects all items.</p>
 				</div>
 			</div>
 			
@@ -84,45 +84,40 @@
 			</div>
 			-->
 			
-		</fieldset>
-		
-		<fieldset>
-			<legend>2. Select Fields to Update</legend>
-			
-			<div class="control-group">
-				<label class="control-label" for="add-field-button">Add Fields to Map</label>
-				<div class="controls">
-					<table border="0" cellpadding="0" cellspacing="0" id="field-list-table" class="table">
-						<thead>
-							<tr>
-								<th>Field</th>
-								<th>Update</th>
-							</tr>
-						</thead>
-						<tbody>
-						</tbody>
-					</table>
-					<input type="button" id="add-field-button" class="btn" value="Add a Field" /> <input type="button" id="reset-button" class="btn btn-warning" value="Reset Fields" />
-					<p class="help-block">Add any fields that you want to update, then select how you want to update them.</p>
-				</div>
-			</div>
-			
 			<div class="control-group">
 				<label class="control-label" for="preview-button">Preview Your Query</label>
 				<div class="controls">
 					<input type="button" id="preview-button" class="btn btn-info" value="Preview" />
-					<p class="help-block">Click the Preview button to view all of the items that will be updated. This will <strong>not</strong> perform the actual updates.</p>
+					<p class="help-block">Click the Preview button to view your query results.</p>
 				</div>
 			</div>
 			
 		</fieldset>
 
 		<fieldset>
-			<legend>3. Update Items</legend>
-			<div class="alert">
-				<p><strong>Warning</strong>: Make sure your lists and updates are set properly and you've run a preview to ensure that the correct list items will be updated. Once this process begins it can only be stopped by closing your browser tab/window. It cannot be undone.</p>
+			<legend>2. Filter Items</legend>
+			<div class="control-group">
+				<label class="control-label">Additional Filter*</label>
+				<div class="controls">
+					<label class="radio">
+						<input type="radio" id="additional-filter-none" name="additional-filter" checked="checked" value="no-filter" />
+						No additional filter.
+					</label>
+					<label class="radio">
+						<input type="radio" id="additional-filter-random" name="additional-filter" value="random-select" />
+						Select a random item.
+					</label>
+					<label class="radio">
+						<input type="radio" id="additional-filter-limit" name="additional-filter" value="limit-number" />
+						Limit the total items to the following number:
+					</label>
+					<label for="additional-filter-limit-number">
+						<input class="input-mini" id="additional-filter-limit-number" type="number" step="1" min="0" value="0" />
+					</label>
+					<p class="help-block">How should the items be additionally filtered?</p>
+				</div>
 			</div>
-			<p><input type="submit" id="update-button" class="btn btn-primary" value="Update Items" /></p>
+			<p><input type="submit" id="update-button" class="btn btn-primary" value="View Results" /></p>
 		</fieldset>
 	</form>
 
@@ -136,7 +131,7 @@
 		</thead>
 		<tbody>
 			<tr>
-				<td colspan="2">Waiting for your input to complete the batch update process.</td>
+				<td colspan="2">Waiting for your input to complete the batch approve process.</td>
 			</tr>
 		</tbody>
 	</table>

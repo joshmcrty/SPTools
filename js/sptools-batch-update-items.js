@@ -286,7 +286,7 @@ function updateListItems( performUpdate ) {
 									// We'll log the responseXML for debugging if there is an error
 									console.log( "Error for " + itemURL );
 									console.log( $( xData.responseXML ) );				
-									resultClass = "error";
+									resultClass = "alert-error";
 									resultText = "Error";
 								}
 								else {
@@ -315,7 +315,7 @@ function updateListItems( performUpdate ) {
 								}
 								
 								// Add to results table
-								$( '#results-table' ).find( 'tbody' ).append( '<tr class="' + resultClass + '" id="item-' + sourceID + '"><td><a href="' + sourceUrl + '">View Updated Item</a></td><td><span class="nowrap">Update: </span> ' + resultText + '<br />See console log for details.</td></tr>' );
+								$( '#results-table' ).find( 'tbody' ).append( '<tr id="item-' + sourceID + '"><td><a href="' + sourceUrl + '">View Updated Item</a></td><td><span class="nowrap">Update: </span><span class="' + resultClass + '">' + resultText + '</span><br />See console log for details.</td></tr>' );
 								
 								console.log( $( xData.responseXML ) );
 							}

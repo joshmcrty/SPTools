@@ -104,7 +104,7 @@ function approveListItems( performApproval ) {
 									// We'll log the responseXML for debugging if there is an error
 									console.log( "Error for " + sourceUrl );
 									console.log( $( xData.responseXML ) );				
-									resultClass = "error";
+									resultClass = "alert-error";
 									resultText = "Error";
 								}
 								else {
@@ -128,7 +128,7 @@ function approveListItems( performApproval ) {
 								}
 								
 								// Add to results table
-								$( '#results-table' ).find( 'tbody' ).append( '<tr class="' + resultClass + '" id="item-' + sourceID + '"><td><a href="' + sourceUrl + '">View Approved Item</a></td><td><span class="nowrap">Approval: </span> ' + resultText + '<br />See console log for details.</td></tr>' );
+								$( '#results-table' ).find( 'tbody' ).append( '<tr id="item-' + sourceID + '"><td><a href="' + sourceUrl + '">View Approved Item</a></td><td><span class="nowrap">Approval: </span><span class="' + resultClass + '">' + resultText + '</span><br />See console log for details.</td></tr>' );
 								
 								console.log( $( xData.responseXML ) );
 							}

@@ -1,5 +1,6 @@
 ﻿<!DOCTYPE html>
 <html>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 <meta charset="UTF-8" />
 
 <title>SPTools Home</title>
@@ -31,6 +32,7 @@
 					<li><a href="batch-start-workflow.html">Start Workflow</a></li>
 					<li><a href="check-permissions.html">Check Permissions</a></li>
 					<li><a href="script-audit.html">Script Audit</a></li>
+					<li><a href="select-items.html">Select Items</a></li>
 				</ul>
 			</div><!-- .nav-collapse -->
 		</div><!-- .container -->
@@ -47,23 +49,24 @@
 		
 	</header>
 	
+	<section id="about">
+		<h2>Why does this exist?</h2>
+		
+		<p>I created SPTools because I found myself repeatedly writing JavaScript functions to interact with SharePoint&rsquo;s web services to perform relatively simple tasks in batches. After hard-coding several of these scripts, I decided to create something a little more flexible using a basic <abbr title="Graphical User Interface">GUI</abbr> for the most common tasks that I found myself doing.</p>
+		
+		<p>As you can see this is still very rough around the edges and I&rsquo;ve got placeholders for some of the tools (I have working examples of each tool, but I haven't generalized all of them yet for public use). The forms have some rudimentary validation, but there's a lot of room for improvement. I appreciate any testing, feedback, ideas, and suggestions that you might have.</p>
+	</section><!-- #about -->
+	
 	<section id="installation">
 		<h2>How to Use SPTools</h2>
 		
-		<p>Download all of the files and put them somewhere in your site collection (a document library will do just fine). All links within SPTools are relative, so all you need to do is dump the entire SPTools folder structure onto your site as-is.</p>
+		<p>Download all of the files and put them somewhere in your site collection (a document library will do just fine). All links within SPTools are relative, so all you need to do is dump the entire SPTools folder structure into your site as-is.</p>
+		<p>SPTools uses JavaScript to interact with SharePoint&rsquo;s web services. Because of that, it can only work with stuff that you have access to (it uses your credentials when it runs) and it is subject to cross-domain security restrictions (i.e. it probably won't work across site collections).</p>
 		
-		<p>SPTools uses JavaScript to interact with SharePoint's web services. Because of that, it can only work with stuff that you have access to (it uses your credentials when it runs) and it is subject to cross-domain security restrictions (i.e. it probably won't work across site collections).</p>
 	</section><!-- #installation -->
 	
-	<section id="about">
-		<h2>Why does this exist?</h2>
-		<p>I created SPTools because I found myself repeatedly writing custom JavaScript to interact with SharePoint's web services to perform relatively simple tasks in batches. After hard-coding several of these scripts, I decided to create something a little more flexible using a basic <abbr title="Graphical User Interface">GUI</abbr> and the most common tasks that I found myself using.</p>
-		
-		<p>As you can see this is still very rough around the edges and I've got placeholders for most of the available tools (I have working examples of each tool, but I haven't generalized all of them yet for public use). However, I appreciate any testing, feedback, ideas, and suggestions that you might have.</p>	
-	</section><!-- #about -->
-	
 	<footer class="footer">
-		<p>SPTools uses <a href="http://jquery.com">jQuery</a> along with the <a href="http://spservices.codeplex.com">jQuery Library for SharePoint Web Services</a> created by <a href="http://twitter.com/sympmarc">Marc Anderson</a> and <a href="http://twitter.github.com/bootstrap">Twitter Bootstrap</a>.</p>
+		<p>SPTools uses <a href="http://twitter.github.com/bootstrap">Twitter Bootstrap</a>, <a href="http://jquery.com">jQuery</a>, and the <a href="http://spservices.codeplex.com">jQuery Library for SharePoint Web Services</a> created by <a href="http://twitter.com/sympmarc">Marc Anderson</a>.</p>
 	</footer><!-- .footer -->
 	
 </div><!-- .container -->

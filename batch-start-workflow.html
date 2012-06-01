@@ -10,6 +10,7 @@
 <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
 <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery.SPServices/0.7.1a/jquery.SPServices-0.7.1a.min.js"></script>
 <script type="text/javascript" src="js/bootstrap.min.js"></script>
+<script type="text/javascript" src="js/sptools-batch-start-workflow.js"></script>
 
 </head>
 <body data-spy="scroll">
@@ -31,6 +32,7 @@
 					<li class="active"><a href="batch-start-workflow.html">Start Workflow</a></li>
 					<li><a href="check-permissions.html">Check Permissions</a></li>
 					<li><a href="script-audit.html">Script Audit</a></li>
+					<li><a href="select-items.html">Select Items</a></li>
 				</ul>
 			</div>
 		</div><!-- .container -->
@@ -39,12 +41,86 @@
 <div class="container">
 	<header class="page-header">
 		<h1>Batch Start Workflow</h1>
-		<p>Sometimes you need to start a lot of workflows.</p>
+		<p>Sometimes you need to start a lot of workflows at once.</p>
 		<p>* indicates a required field.</p>
 	</header>
 	
-	<p>In development&hellip;</p>
-	
+	<form id="batch-form" class="form-horizontal" action="#">
+		
+		<fieldset>
+			<legend>1. Select Source List/Library and Items</legend>
+			
+			<div class="control-group">
+				<label class="control-label" for="source-list-name">Source List Name*</label>
+				<div class="controls">
+					<input type="text" id="source-list-name" placeholder="List Name" required="required" />
+					<p class="help-block">Enter the display name or the GUID of the source list (e.g. &ldquo;Announcements&rdquo; or &ldquo;{A123AB12-AB1A-12A1-1234-ABC1A1234A12}&rdquo;).</p>
+				</div>
+			</div>
+			
+			<div class="control-group">
+				<label class="control-label" for="source-web-url">Source Web URL*</label>
+				<div class="controls">
+					<input type="text" id="source-web-url" placeholder="http://Server/Site" required="required" />
+					<p class="help-block">Enter the path to the site or sub-site where the source list is located (e.g. &ldquo;http://Server/Site&rdquo;).</p>
+				</div>
+			</div>
+			
+			<div class="control-group">
+				<label class="control-label" for="caml-query">CAML Query*</label>
+				<div class="controls">
+					<textarea id="caml-query" class="input-xlarge" rows="6" required="required">&lt;Query&gt;&lt;Where&gt;&lt;Neq&gt;&lt;FieldRef Name=&quot;ID&quot; /&gt;&lt;Value Type=&quot;Integer&quot;&gt;0&lt;/Value&gt;&lt;/Neq&gt;&lt;/Where&gt;&lt;/Query&gt;</textarea>
+					<p class="help-block">Enter the CAML Query to select the items you want to duplicate. By default this selects all items.</p>
+				</div>
+			</div>
+			
+			<div class="control-group">
+				<label class="control-label" for="preview-button">Preview Your Query</label>
+				<div class="controls">
+					<input type="button" id="preview-button" class="btn btn-info" value="Preview" />
+					<p class="help-block">Click the Preview button to view all of the items that will have the workflow started. This will <strong>not</strong> perform the workflow.</p>
+				</div>
+			</div>
+			
+		</fieldset>
+		
+		<fieldset>
+			<legend>2. Select Workflow</legend>
+			
+			<div class="control-group">
+				<label class="control-label" for="workflow-name">Workflow Name*</label>
+				<div class="controls">
+					<input type="text" id="workflow-name" placeholder="Workflow Display Name" required="required" />
+					<p class="help-block">Enter the display name of the workflow to initiate on the list/library items.</p>
+				</div>
+			</div>
+			
+		</fieldset>
+		
+		<fieldset>
+			<legend>3. Start Workflows</legend>
+			<div class="alert">
+				<p><strong>Warning</strong>: Make sure your source list/library is set properly, the correct workflow has been selected, and you've run a preview to ensure that the correct items will have a workflow initiated. Once this process begins it can only be stopped by closing your browser tab/window.</p>
+			</div>
+			<p><input type="submit" id="update-button" class="btn btn-primary" value="Start Workflows" /></p>
+		</fieldset>
+
+	</form>
+
+	<h2>Results</h2>
+
+	<table border="0" cellpadding="0" cellspacing="0" id="results-table" width="100%" class="table table-bordered table-striped">
+		<thead>
+			<tr>
+				<th>Item URL</th><th>Result</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td colspan="2">Waiting for your input to complete the batch workflow process.</td>
+			</tr>
+		</tbody>
+	</table>
 </div><!-- .container -->
 </body>
 </html>

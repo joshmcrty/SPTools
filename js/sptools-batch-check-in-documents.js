@@ -95,7 +95,7 @@ function checkInDocuments( performCheckIn ) {
 								
 									// We'll log the responseXML for debugging if there is an error
 									console.log( "Error for " + itemURL );
-									resultClass = "error";
+									resultClass = "alert-error";
 									resultText = "Error";
 								}
 								else {
@@ -114,7 +114,7 @@ function checkInDocuments( performCheckIn ) {
 								}
 								
 								// Add to results table
-								$( '#results-table' ).find( 'tbody' ).append( '<tr class="' + resultClass + '" id="item-' + id + '"><td><a href="' + sourceUrl + '">' + sourceUrl + '</a></td><td><span class="nowrap">Check In: </span> ' + resultText + '<br />See console log for details.</td></tr>' );
+								$( '#results-table' ).find( 'tbody' ).append( '<tr id="item-' + id + '"><td><a href="' + sourceUrl + '">' + sourceUrl + '</a></td><td><span class="nowrap">Check In: </span><span class="' + resultClass + '">' + resultText + '</span><br />See console log for details.</td></tr>' );
 								
 								console.log( $( xData.responseXML ) );
 							}
