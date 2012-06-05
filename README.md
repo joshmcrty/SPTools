@@ -70,5 +70,5 @@ This is still in development.
 
 This tool allows you to output a list of items on the page based on your CAML Query and some additional filters. I created it as a quick and easy way to randomly select an item from a list, so that's the only "cool" function for the tool at the moment.
 
-1. ONce your List Name, Web URL, and CAML Query fields are set, select the additional filter you wish to perform when selecting the list items (if any).
+1. Once your List Name, Web URL, and CAML Query fields are set, select the additional filter you wish to perform when selecting the list items (if any).
 2. Click the **View Results** button.
