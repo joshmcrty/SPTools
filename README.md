@@ -5,6 +5,14 @@ A collection of GUI tools for interacting with SharePoint&#39;s web services to 
 
 These are still in development. I created them to serve my own needs, so their functionality is limited to what I've needed in my day job. I will be adding more functionality and cleaning up the UI as time permits.
 
+Installation
+------------
+
+1. Click the **Downloads** link above (https://github.com/joshmcrty/SPTools/downloads), then click the **Download as zip** button.
+2. Unzip all files into a Document Library on your SharePoint site.
+3. Open the index.html file in your web browser (I use Chrome because it's very fast).
+4. Use the tools!
+
 General Use
 -----------
 
