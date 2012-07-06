@@ -18,14 +18,14 @@ From that point each tool differs depending on what actions it performs. There i
 
 ### Update Items
 
-This tool allows you to set the value of a field (or multiple fields) for multiple list items at once.
+This tool allows you to set the value of a field (or multiple fields) for multiple list items at once. It also allows you to delete items based on your CAML query.
 
-It currently only supports one action--Remove Lookup Item. This allows you to remove a single lookup from a field that allows multiple lookups.
+It currently supports several actions: removing a lookup (from a lookup multi-select field), replacing a value, prepending a value, appending a value, and clearing a value (making it empty).
 
 1. Once your List Name, Web URL, and CAML Query fields are set, click the **Add a Field** button.
 2. Select the multiple lookup field from the **Field** dropdown.
-3. Select "Remove Lookup Item" from the **Update** dropdown.
-4. Enter the lookup item to remove. Use the item ID, a semicolon, a hash symbol, and the display name of the lookup as used in the list (e.g. if the Title field is displayed in the lookup column, use the value of the title field after the ";#"). I plan on creating a dropdown of available lookup items to choose from so you don't have to manually enter the value, but for now this serves my needs.
+3. Select the type of update from the **Update** dropdown.
+4. Enter the new value (if applicable). For the "Remove Lookup Item" update, Use the item ID, a semicolon, a hash symbol, and the display name of the lookup as used in the list (e.g. if the Title field is displayed in the lookup column, use the value of the title field after the ";#"). I plan on creating a dropdown of available lookup items to choose from so you don't have to manually enter the value, but for now this serves my needs.
 5. Click the **Update Items** button.
 
 ### Approve List Items

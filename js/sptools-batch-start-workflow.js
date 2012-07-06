@@ -13,17 +13,17 @@ window.log = function() {
 function startWorkflow( performWorkflow ) {
 	
 	// Get form field values
-	var sourceWebUrl = $( '#web-url' ).val();
-	var sourceListName = $( '#list-name' ).val();
+	var sourceWebUrl = $( '#source-web-url' ).val();
+	var sourceListName = $( '#source-list-name' ).val();
 	var camlQuery = $( '#caml-query' ).val();
-	var serverUrl = $( '#web-url' ).val();
+	var serverUrl = $( '#source-web-url' ).val();
 	var workflowName = $( '#workflow-name' ).val();
 	
 	// Check that required fields are filled out
 	if ( sourceWebUrl === '' || sourceListName === '' || camlQuery === '' || serverUrl === '' || workflowName === '' ) {
 		
 		// Todo: more robust validation and messages
-		alert( 'Please enter all required information for the list/library.' );
+		alert( 'Please enter all required information for the source list/library.' );
 		return false;
 	}
 	

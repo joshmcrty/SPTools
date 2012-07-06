@@ -1,4 +1,4 @@
-﻿﻿<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 <meta charset="UTF-8" />
 
@@ -48,21 +48,21 @@
 	<form id="batch-form" class="form-horizontal" action="#">
 		
 		<fieldset>
-			<legend>1. Select List/Library and Items</legend>
+			<legend>1. Select Source List/Library and Items</legend>
 			
 			<div class="control-group">
-				<label class="control-label" for="list-name">List Name*</label>
+				<label class="control-label" for="source-list-name">Source List Name*</label>
 				<div class="controls">
-					<input type="text" id="list-name" placeholder="List Name" required="required" />
-					<p class="help-block">Enter the display name or the GUID of the list (e.g. &ldquo;Announcements&rdquo; or &ldquo;{A123AB12-AB1A-12A1-1234-ABC1A1234A12}&rdquo;).</p>
+					<input type="text" id="source-list-name" placeholder="List Name" required="required" />
+					<p class="help-block">Enter the display name or the GUID of the source list (e.g. &ldquo;Announcements&rdquo; or &ldquo;{A123AB12-AB1A-12A1-1234-ABC1A1234A12}&rdquo;).</p>
 				</div>
 			</div>
 			
 			<div class="control-group">
-				<label class="control-label" for="web-url">Web URL*</label>
+				<label class="control-label" for="source-web-url">Source Web URL*</label>
 				<div class="controls">
-					<input type="text" id="web-url" placeholder="http://Server/Site" required="required" />
-					<p class="help-block">Enter the path to the site or sub-site where the list is located (e.g. &ldquo;http://Server/Site&rdquo;).</p>
+					<input type="text" id="source-web-url" placeholder="http://Server/Site" required="required" />
+					<p class="help-block">Enter the path to the site or sub-site where the source list is located (e.g. &ldquo;http://Server/Site&rdquo;).</p>
 				</div>
 			</div>
 			
@@ -100,7 +100,7 @@
 		<fieldset>
 			<legend>3. Start Workflows</legend>
 			<div class="alert">
-				<p><strong>Warning</strong>: Make sure your list/library is set properly, the correct workflow has been selected, and you've run a preview to ensure that the correct items will have a workflow initiated. Once this process begins it can only be stopped by closing your browser tab/window.</p>
+				<p><strong>Warning</strong>: Make sure your source list/library is set properly, the correct workflow has been selected, and you've run a preview to ensure that the correct items will have a workflow initiated. Once this process begins it can only be stopped by closing your browser tab/window.</p>
 			</div>
 			<p><input type="submit" id="update-button" class="btn btn-primary" value="Start Workflows" /></p>
 		</fieldset>

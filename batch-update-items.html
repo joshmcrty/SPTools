@@ -74,6 +74,14 @@
 				</div>
 			</div>
 			
+			<div class="control-group">
+				<label class="control-label" for="preview-button">Preview Your Query</label>
+				<div class="controls">
+					<input type="button" id="preview-button" class="btn btn-info" value="Preview" />
+					<p class="help-block">Click the Preview button to view all of the items that will be updated. This will <strong>not</strong> perform the actual updates.</p>
+				</div>
+			</div>
+			
 			<!--
 			<div class="control-group">
 				<label class="control-label" for="source-list-content-type">Source List Content Type</label>
@@ -86,8 +94,8 @@
 			
 		</fieldset>
 		
-		<fieldset>
-			<legend>2. Select Fields to Update</legend>
+		<fieldset class="spt-update-fields">
+			<legend>2a. Select Fields to Update</legend>
 			
 			<div class="control-group">
 				<label class="control-label" for="add-field-button">Add Fields to Map</label>
@@ -107,14 +115,17 @@
 				</div>
 			</div>
 			
+		</fieldset>
+		
+		<fieldset>
+			<legend>2b. Or Delete Items</legend>
+			
 			<div class="control-group">
-				<label class="control-label" for="preview-button">Preview Your Query</label>
+				<label class="control-label" for="delete-items">Delete Items</label>
 				<div class="controls">
-					<input type="button" id="preview-button" class="btn btn-info" value="Preview" />
-					<p class="help-block">Click the Preview button to view all of the items that will be updated. This will <strong>not</strong> perform the actual updates.</p>
+					<label class="checkbox"><input type="checkbox" id="delete-items" value="Delete" /> I want to delete these items instead of update them</label>
 				</div>
 			</div>
-			
 		</fieldset>
 
 		<fieldset>

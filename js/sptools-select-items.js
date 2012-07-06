@@ -64,7 +64,10 @@ function selectListItems( processItems ) {
 		CAMLRowLimit: camlRowLimit,
 		CAMLQuery: camlQuery,
 		CAMLViewFields: '<ViewFields Properties="True" />',
+		CAMLQueryOptions: '<QueryOptions><ViewAttributes Scope="RecursiveAll" /></QueryOptions>',
 		completefunc: function( xData, Status ) {
+		
+			console.log( $( xData.responseXML ) );
 			
 			// Check to see if any items match the CAML query in the specified Web URL and List Name
 			if ( $( xData.responseXML ).SPFilterNode( 'z:row' ).length !== 0 ) {

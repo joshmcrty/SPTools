@@ -22,7 +22,22 @@
 	padding: 35px 0 36px;
 	border-top: 1px solid #e5e5e5;
 }
-
+.sp-disabled-fieldset {
+	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
+	filter: alpha(opacity=50);
+	-moz-opacity: 0.5;
+	-khtml-opacity: 0.5;
+	opacity: 0.5;
+	position: relative;
+}
+.sp-disabled-overlay {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	z-index: 999;
+}
 @media (max-width: 980px) {
 	body {
 		padding-top: 0;

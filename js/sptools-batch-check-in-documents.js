@@ -46,6 +46,7 @@ function checkInDocuments( performCheckIn ) {
 		CAMLQuery: camlQuery,
 		CAMLRowLimit: 0,
 		CAMLViewFields: '<ViewFields Properties="True" />',
+		CAMLQueryOptions: '<QueryOptions><ViewAttributes Scope="RecursiveAll" IncludeRootFolder="True" /></QueryOptions>',
 		completefunc: function( xData, Status ) {
 		
 			// Check to see if any items match the CAML query in the specified Web URL and List Name

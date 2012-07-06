@@ -12,8 +12,8 @@ window.log = function() {
 
 function getListFields( listName, webURL, defaultValue ) {
 
-	// Cache the array to store the fields names in
-	var html = '<select><option value="">Select&hellip;</option>';
+	// Cache the variable to store the fields names in
+	var html = '<select><option value="" selected="selected">Select&hellip;</option>';
 	
 	$().SPServices({
 		operation: 'GetList',
@@ -21,6 +21,8 @@ function getListFields( listName, webURL, defaultValue ) {
 		listName: listName,
 		webURL: webURL,
 		completefunc: function( xData, Status ) {
+		
+			console.log( $( xData.responseXML ) );
 			
 			// Add each field to the array of fields
 			$( xData.responseXML ).SPFilterNode( 'Field' ).each( function() {				
@@ -28,19 +30,24 @@ function getListFields( listName, webURL, defaultValue ) {
 				var displayName = $( this ).attr( 'DisplayName' );
 				var baseColumn = $( this ).attr( 'FromBaseType' );
 				var requiredColumn = $( this ).attr( 'Required' );
+				var hiddenColumn = $( this ).attr( 'Hidden' );
+				var typeColumn = $( this ).attr( 'Type' );
+				var readOnlyColumn = $( this ).attr( 'ReadOnly' );
 				
 				// Indicate if a column is required with an asterisk
 				var requiredColumnIndicator = "";
 				if ( requiredColumn === "TRUE" ) {
 					requiredColumnIndicator = "*";
 				}
+
 				
-				if ( typeof staticName !== "undefined" && typeof displayName !== "undefined" && ( baseColumn !== "TRUE" || requiredColumn === "TRUE" || staticName === "Title" ) ) {
+				if ( typeof staticName !== "undefined" && typeof displayName !== "undefined" && hiddenColumn !== "TRUE" && typeColumn !== "Computed" && readOnlyColumn !== "TRUE" ) {
+
 					if ( staticName === defaultValue ) {
-						html += '<option value="' + staticName + '" selected="selected">' + displayName + requiredColumnIndicator + '</option>';
+						html += '<option value="' + staticName + '" selected="selected" data-hidden="' + hiddenColumn + '">' + displayName + requiredColumnIndicator + '</option>';
 					}
 					else {
-						html += '<option value="' + staticName + '">' + displayName + '</option>';
+						html += '<option value="' + staticName + '" data-hidden="' + hiddenColumn + '">' + displayName + requiredColumnIndicator + '</option>';
 					}
 				}
 			});
@@ -55,8 +62,8 @@ function getListUpdates( listName, webURL, fieldName ) {
 	var now = new Date();
 	var uniqueID = now.valueOf();
 	
-	// Cache the array to store the fields names in
-	var html = '<label for="' + uniqueID + '">Select the type of update to perform:</label> <select id="' + uniqueID + '" class="source-field-update-type"><option value="">Select&hellip;</option><option value="remove-lookup">Remove Lookup Item</option>';
+	// Create the dropdown for the field.
+	var html = '<label for="' + uniqueID + '">Select the type of update to perform:</label> <select id="' + uniqueID + '" class="source-field-update-type"><option value="">Select&hellip;</option><option value="remove-lookup">Remove Lookup Item</option><option value="set-value">Set Value</option><option value="append-value">Append Value</option><option value="prepend-value">Prepend Value</option><option value="clear-value">Clear Value</option>';
 	
 	html += '</select>';
 	
@@ -100,13 +107,13 @@ function addField( defaultValue ) {
 		return false;
 	}
 	
-	// Get the list of fields for the source and destination lists
+	// Get the list of fields for the source list
 	var sourceFieldList = getListFields( sourceListName, sourceWebUrl, defaultValue );
 	
 	// Cache the table body element
 	var tableBody = $( '#field-list-table' ).find( 'tbody' );
 	
-	// Add a table row with the source and destination list fields and dropdown menus
+	// Add a table row with the source list field and dropdown menu
 	$( tableBody ).append( '<tr><td class="source-field-select">' + sourceFieldList + '<br /><a href="#remove-field" class="remove-field" title="Remove this field">Remove</a></td><td class="source-field-update">&larr; Select a field to apply updates to.</td></tr>' );
 		
 	// Automatically switch focus to the next field; automatically add another row when the destination field is chosen
@@ -129,9 +136,41 @@ function addField( defaultValue ) {
 					
 					break;
 					
+				case "set-value":
+				
+					var now = new Date();
+					var uniqueID = now.valueOf();
+					$( this ).parent().append( '<div class="update-wrapper"><label for="' + uniqueID + '">Enter the new value for this field in the proper format:</label> <input id="' + uniqueID + '" class="source-field-update-value" type="text" placeholder="Hello World" /></div>' );
+					
+					break;
+					
+				case "append-value":
+				
+					var now = new Date();
+					var uniqueID = now.valueOf();
+					$( this ).parent().append( '<div class="update-wrapper"><label for="' + uniqueID + '">Enter the value to append to the current value:</label> <input id="' + uniqueID + '" class="source-field-update-value" type="text" placeholder="&hellip;and this too" /></div>' );
+					
+					break;
+					
+				case "prepend-value":
+				
+					var now = new Date();
+					var uniqueID = now.valueOf();
+					$( this ).parent().append( '<div class="update-wrapper"><label for="' + uniqueID + '">Enter the value to prepend to the current value:</label> <input id="' + uniqueID + '" class="source-field-update-value" type="text" placeholder="This first&hellip;" /></div>' );
+					
+					break;
+				
+				case "clear-value":
+				
+					var now = new Date();
+					var uniqueID = now.valueOf();
+					$( this ).parent().append( '<div class="update-wrapper">This field&rsquo;s value will be cleared (it will be empty).</div>' );
+					
+					break;
+					
 				default:
 					
-					// Do something
+					// Do nothing
 			}
 		});
 	});
@@ -260,6 +299,34 @@ function updateListItems( performUpdate ) {
 									newValue = sourceValue.split( sourceUpdateValue ).join( '' ).split( ';#;#' ).join( ';#' );
 									
 									break;
+								
+								case "set-value":
+									
+									newValue = sourceUpdateValue;
+									
+									break;
+								
+								case "append-value":
+									
+									newValue = sourceValue + sourceUpdateValue;
+									
+									break;
+								
+								case "prepend-value":
+									
+									newValue = sourceUpdateValue + sourceValue;
+									
+									break;
+									
+								case "remove-value":
+									
+									newValue = "";
+									
+									break;
+									
+								default:
+								
+									// Do nothing
 							}
 							batchCmd += '<Field Name="' + sourceField + '"><![CDATA[' + newValue + ']]></Field>';
 						});
@@ -336,21 +403,154 @@ function updateListItems( performUpdate ) {
 	});
 }
 
+
+function deleteListItems() {
+	// Get form field values
+	var sourceWebUrl = $( '#source-web-url' ).val();
+	var sourceListName = $( '#source-list-name' ).val();
+	var camlQuery = $( '#caml-query' ).val();
+	
+	// Check that required fields are filled out
+	if ( sourceWebUrl === '' || sourceListName === '' || camlQuery === '' ) {
+		
+		// Todo: more robust validation and messages
+		alert( 'Please enter all required information for the source list.' );
+		return false;
+	}
+	
+	// Indicate that something is happening
+	$( '#processing' ).remove();
+	$( '#update-button' ).attr( 'disabled', 'disabled' ).parent().after( '<div id="processing" class="alert">Processing&hellip;Please be patient as this may take several minutes and your browser may become unresponsive.</div>' );
+	$( '#results-table' ).find( 'tbody' ).html( '' );
+	
+	// Cache the processing message
+	var processing = $( '#processing' );
+	
+	// Cache variable to store count of items processed
+	var currentCount = 0;
+	
+	// Get each source list item
+	$().SPServices({
+		operation: 'GetListItems',
+		async: true,
+		listName: sourceListName,
+		webURL: sourceWebUrl,
+		CAMLRowLimit: 0,
+		CAMLQuery: camlQuery,
+		CAMLViewFields: '<ViewFields Properties="True" />',
+		completefunc: function( xData, Status ) {
+			
+			// Check to see if any items match the CAML query in the specified Web URL and List Name
+			if ( $( xData.responseXML ).SPFilterNode( 'z:row' ).length !== 0 ) {
+			
+				var recordTotal = $( xData.responseXML ).SPFilterNode( 'z:row' ).length;
+			
+				$( xData.responseXML ).SPFilterNode( 'z:row' ).each( function( index ) {
+					
+					var sourceID = $( this ).attr( 'ows_ID' );
+					var sourceDir = $( this ).attr( 'ows_FileDirRef' ).split( ';#' )[1];
+					var sourceUrl = '/' + sourceDir + '/DispForm.aspx?ID=' + sourceID;
+					
+					// Create the batchCmd variable that will be used to update the list item
+					var batchCmd = '<Batch OnError="Continue"><Method ID="1" Cmd="Delete"><Field Name="ID">' + sourceID + '</Field></Method></Batch>';
+					
+					console.log( 'Batch command: ' + batchCmd );
+					
+					// Update the list item using the batchCmd variable
+					$().SPServices({
+						operation: 'UpdateListItems',
+						async: true,
+						listName: sourceListName,
+						webURL: sourceWebUrl,
+						updates: batchCmd,
+						completefunc: function( xData, Status ) {
+							
+							var resultClass = "";
+							var resultText = "";
+							
+							if ( Status !== "success" ) {
+							
+								// We'll log the responseXML for debugging if there is an error
+								console.log( "Error for " + itemURL );
+								console.log( $( xData.responseXML ) );				
+								resultClass = "alert-error";
+								resultText = "Error";
+							}
+							else {
+								var errorCode = $( xData.responseXML ).find( 'ErrorCode' ).text();
+								if ( errorCode !== "0x00000000" ) {
+									resultText = "Error";
+								}
+								else {
+									resultText = "Success";
+								}
+								$( xData.responseXML ).SPFilterNode( 'z:row' ).each( function() {
+									var updatedID = $( this ).attr( 'ows_ID' );
+									var updatedDir = $( this ).attr( 'ows_FileDirRef' ).split( ';#' )[1];
+									updatedURL = '/' + updatedDir + '/DispForm.aspx?ID=' + updatedID;
+								});
+							}
+							
+							// Indicate progress
+							currentCount++;
+							if ( recordTotal !== currentCount ) {
+								$( processing ).html( 'Processing&hellip;' + currentCount + ' of ' + recordTotal );
+							}
+							else {
+								$( processing ).addClass( 'alert-success' ).html( 'Updates Complete! ' + recordTotal + ' items processed.' );
+								$( '#update-button' ).removeAttr( 'disabled' );
+							}
+							
+							// Add to results table
+							$( '#results-table' ).find( 'tbody' ).append( '<tr id="item-' + sourceID + '"><td><a href="' + sourceUrl + '">Item Deleted</a></td><td><span class="nowrap">Update: </span><span class="' + resultClass + '">' + resultText + '</span><br />See console log for details.</td></tr>' );
+							
+							console.log( $( xData.responseXML ) );
+						}
+					});
+				});
+			}
+			else {
+			
+				// We don't have any items to process
+				var message = "There are no source list items that match the specified CAML Query, Web URL, and List Name.";
+				console.log( message );
+				$( processing ).addClass( 'alert-error' ).html( message );
+				$( '#update-button' ).removeAttr( 'disabled' );
+				$( '#results-table' ).find( 'tbody' ).append( '<tr><td colspan="2">' + message + '</td></tr>' );
+			}
+		}
+	});
+}
+
 $( document ).ready( function() {
-	$( '#batch-form' ).submit( function() {
-		updateListItems( true );
-		return false;
+	$( '#batch-form' ).submit( function( e ) {
+		e.preventDefault();
+		if ( $( '#delete-items' ).is( ':checked' ) ) {
+			deleteListItems();
+		}
+		else {
+			updateListItems( true );
+		}
 	});
-	$( '#reset-button' ).click( function() {
+	$( '#reset-button' ).click( function( e ) {
+		e.preventDefault();
 		$( '#field-list-table' ).find( 'tbody' ).html( '' );
-		return false;
 	});
-	$( '#preview-button' ).click( function() {
+	$( '#preview-button' ).click( function( e ) {
+		e.preventDefault();
 		updateListItems( false );
-		return false;
 	});
-	$( '#add-field-button' ).click( function() {
+	$( '#add-field-button' ).click( function( e ) {
+		e.preventDefault();
 		addField();
-		return false;
+	});
+	$( '#delete-items' ).change( function() {
+		console.log( 'changed' );
+		if ( $( this ).is( ':checked' ) ) {
+			$( '.spt-update-fields' ).addClass( 'sp-disabled-fieldset' ).prepend( '<div class="sp-disabled-overlay" />' );
+		}
+		else {
+			$( '.spt-update-fields' ).removeClass( 'sp-disabled-fieldset' ).find( '.sp-disabled-overlay' ).remove();
+		}
 	});
 });
