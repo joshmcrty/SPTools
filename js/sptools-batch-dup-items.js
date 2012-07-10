@@ -21,7 +21,7 @@ function getListFields( listName, webURL, defaultValue ) {
 		listName: listName,
 		webURL: webURL,
 		completefunc: function( xData, Status ) {
-			
+		
 			// Add each field to the array of fields
 			$( xData.responseXML ).SPFilterNode( 'Field' ).each( function() {				
 				var staticName = $( this ).attr( 'StaticName' );
@@ -79,7 +79,6 @@ function addField( defaultValue ) {
 	// Automatically switch focus to the next field; automatically add another row when the destination field is chosen
 	$( tableBody ).find( 'tr:last-child' ).find( '.source-field-select' ).find( 'select' ).focus().change( function() {
 		var sourceText = $( this ).find( 'option:selected' ).text();
-		console.log( sourceText );
 		var destinationSelect = $( this ).closest( 'tr' ).find( '.destination-field-select' ).find( 'select' );
 		$( destinationSelect ).focus().find( 'option' ).each( function() {
 			
@@ -97,7 +96,7 @@ function addField( defaultValue ) {
 	});
 }
 
-function duplicateListItems( performCopy ) {
+function duplicateListItems( performCopy, nextPage ) {
 
 	// Get form field values
 	var sourceWebUrl = $( '#source-web-url' ).val();
@@ -105,6 +104,19 @@ function duplicateListItems( performCopy ) {
 	var destinationWebUrl = $( '#destination-web-url' ).val();
 	var destinationListName = $( '#destination-list-name' ).val();
 	var camlQuery = $( '#caml-query' ).val();
+	var camlRowLimit = 0;
+	if ( $( '#source-list-paging' ).is( ':checked' ) ) {
+		camlRowLimit = 2000;
+	}
+	var nextPage = $( '#next-page' ).val();
+	nextPage = nextPage.replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+	var pageNumber = $( '#next-page-number' ).val();
+	if ( performCopy === false ) {
+		nextPage = $( '#next-page-preview' ).val();
+		nextPage = nextPage.replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+		pageNumber = $( '#next-page-preview-number' ).val();
+	}
+	pageNumber++;
 	
 	// Check that required fields are filled out
 	if ( performCopy === false ) {
@@ -132,6 +144,17 @@ function duplicateListItems( performCopy ) {
 		}
 	}
 	
+	var sourceItemCount = "";
+	$().SPServices({
+		operation: 'GetList',
+		async: false,
+		listName: sourceListName,
+		webURL: sourceWebUrl,
+		completefunc: function( xData, Status ) {
+			sourceItemCount = $( xData.responseXML ).SPFilterNode( 'List' ).attr( 'ItemCount' );
+		}
+	});
+	
 	// Indicate that something is happening
 	$( '#processing' ).remove();
 	$( '#update-button' ).attr( 'disabled', 'disabled' ).parent().after( '<div id="processing" class="alert">Processing&hellip;</div>' );
@@ -149,15 +172,29 @@ function duplicateListItems( performCopy ) {
 		async: true,
 		listName: sourceListName,
 		webURL: sourceWebUrl,
-		CAMLRowLimit: 0,
 		CAMLQuery: camlQuery,
+		CAMLQueryOptions: '<QueryOptions><Paging ListItemCollectionPositionNext="' + nextPage + '" /></QueryOptions>',
+		CAMLRowLimit: camlRowLimit,
 		CAMLViewFields: '<ViewFields Properties="True" />',
 		completefunc: function( xData, Status ) {
-			
+		
 			// Check to see if any items match the CAML query in the specified Web URL and List Name
 			if ( $( xData.responseXML ).SPFilterNode( 'z:row' ).length !== 0 ) {
 			
 				var recordTotal = $( xData.responseXML ).SPFilterNode( 'z:row' ).length;
+				var pagesTotal = Math.ceil( sourceItemCount / camlRowLimit );
+				var nextPageValue = $( xData.responseXML ).SPFilterNode( 'rs:data' ).attr( 'ListItemCollectionPositionNext' );
+				if ( typeof nextPageValue === "undefined" ) {
+					nextPageValue = "";
+				}
+				if ( performCopy === false ) {
+					$( '#next-page-preview' ).val( nextPageValue );
+					$( '#next-page-preview-number' ).val( pageNumber );
+				}
+				else {
+					$( '#next-page' ).val( nextPageValue );
+					$( '#next-page-number' ).val( pageNumber );
+				}	
 			
 				$( xData.responseXML ).SPFilterNode( 'z:row' ).each( function( index ) {
 					
@@ -176,6 +213,12 @@ function duplicateListItems( performCopy ) {
 						}
 						else {
 							$( processing ).addClass( 'alert-success' ).html( 'Complete! ' + recordTotal + ' items processed.' );
+							if ( sourceItemCount > camlRowLimit && camlRowLimit !== 0 ) {
+								$( processing ).append( ' This query is paged. Now showing page ' + pageNumber + ' of ' + pagesTotal + '.' );
+							}
+							if ( recordTotal < camlRowLimit && camlRowLimit !== 0 ) {
+								$( processing ).append( ' All items have been processed.' );
+							}
 							$( '#update-button' ).removeAttr( 'disabled' );
 						}
 						
@@ -223,7 +266,7 @@ function duplicateListItems( performCopy ) {
 								if ( Status !== "success" ) {
 								
 									// We'll log the responseXML for debugging if there is an error
-									console.log( "Error for " + itemURL );
+									console.log( "Error for " + sourceUrl );
 									console.log( $( xData.responseXML ) );				
 									resultClass = "alert-error";
 									resultText = "Error";
@@ -251,6 +294,12 @@ function duplicateListItems( performCopy ) {
 								}
 								else {
 									$( processing ).addClass( 'alert-success' ).html( 'Complete! ' + recordTotal + ' items processed.' );
+									if ( sourceItemCount > camlRowLimit && camlRowLimit !== 0 ) {
+										$( processing ).append( ' This query is paged. Now showing page ' + pageNumber + ' of ' + pagesTotal + '.' );
+									}
+									if ( recordTotal < camlRowLimit && camlRowLimit !== 0 ) {
+										$( processing ).append( ' All items have been processed.' );
+									}
 									$( '#update-button' ).removeAttr( 'disabled' );
 								}
 								

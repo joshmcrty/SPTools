@@ -74,6 +74,13 @@
 				</div>
 			</div>
 			
+			<div class="control-group">
+				<label class="control-label" for="source-list-paging">Use Paging</label>
+				<div class="controls">
+					<label class="checkbox"><input type="checkbox" checked="checked" id="source-list-paging" value="paging" /> If you are selecting thousands of items, use paging to avoid overwhelming the web services.</label>
+				</div>
+			</div>
+			
 			<!--
 			<div class="control-group">
 				<label class="control-label" for="source-list-content-type">Source List Content Type</label>
@@ -143,6 +150,10 @@
 			<div class="alert">
 				<p><strong>Warning</strong>: Make sure your source and destination lists are set properly and you've run a preview to ensure that the correct list items will be duplicated. Once this process begins it can only be stopped by closing your browser tab/window.</p>
 			</div>
+			<input type="hidden" id="next-page" value="" />
+			<input type="hidden" id="next-page-number" value="0" />
+			<input type="hidden" id="next-page-preview" value="" />
+			<input type="hidden" id="next-page-preview-number" value="0" />
 			<p><input type="submit" id="update-button" class="btn btn-primary" value="Duplicate Items" /></p>
 		</fieldset>
 	</form>

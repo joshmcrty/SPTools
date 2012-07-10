@@ -51,6 +51,7 @@ This tool allows you to create a duplicate of a list item from one list into ano
 3. Select the field from the **Destination Field** dropdown that you want to copy the source field into. If the destination list has a field with the same display name as the source field, it will auto-select that field for you.
 4. Repeat this process for each field that you want to copy.
 5. Click the **Duplicate Items** button.
+6. If paging is enabled (recommended for more than 2,000 items), you will need to click the **Duplicate Items** button after each batch of items has been processed.
 
 ### Check-in Documents
 
